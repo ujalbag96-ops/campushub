@@ -16,14 +16,18 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install Bubblewrap CLI
-        run: npm install -g @bubblewrap/cli
-
-      - name: Build Web App
+      - name: Install Dependencies & Build
         run: |
           npm install
-          npm run build || echo "No build script needed"
+          npm run build || echo "Build script skipped"
 
-      - name: Note for APK
+      - name: Generate Dummy APK Artifact (For Test)
         run: |
-          echo "Aapka project yahan ready ho gaya hai. PWABuilder ya Bubblewrap ke zariye automated APK yahan configure ki ja sakti hai."
+          mkdir -p output
+          echo "Yeh aapke app ka placeholder APK package hai" > output/app-release.apk
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-release-apk
+          path: output/app-release.apk
