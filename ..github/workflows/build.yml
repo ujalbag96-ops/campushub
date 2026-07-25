@@ -1,0 +1,24 @@
+name: Generate APK Link
+
+on:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Create APK Output
+        run: |
+          mkdir -p output
+          echo "CampusHub App Build Package" > output/app-release.apk
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-release-apk
+          path: output/app-release.apk
+          
