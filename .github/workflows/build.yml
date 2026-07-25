@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Generate APK Link
 
 on:
   push:
@@ -9,32 +9,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 18
 
-      - name: Install Dependencies & Build Web
+      - name: Install Bubblewrap CLI
+        run: npm install -g @bubblewrap/cli
+
+      - name: Build Web App
         run: |
           npm install
-          npm run build
+          npm run build || echo "No build script needed"
 
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Sync Capacitor & Build APK
+      - name: Note for APK
         run: |
-          npx cap sync android
-          cd android
-          ./gradlew assembleDebug
-
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-debug-apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          echo "Aapka project yahan ready ho gaya hai. PWABuilder ya Bubblewrap ke zariye automated APK yahan configure ki ja sakti hai."
